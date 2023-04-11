@@ -15,6 +15,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                About Us
                             </a>
+                            <a class="nav-link" href="{{ route('task.create')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                               Task Create
+                            </a>
                         </div>
                     </div>
                 </nav>

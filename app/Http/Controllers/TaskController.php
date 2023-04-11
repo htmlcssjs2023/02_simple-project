@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class FrontendController extends Controller
+class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,15 +15,9 @@ class FrontendController extends Controller
      */
     public function index()
     {
-        $title = "Admin Pannel";
-       return view('index', compact('title'));
-    }
-    public function contact(){
-        return view('contact');
-    }
-    public function about(){
-
-        return view('about-us');
+        $tasks = Task::all();
+        // dd($tasks);
+        return view('modules.task.index',compact('tasks'));
     }
 
     /**
@@ -31,7 +27,8 @@ class FrontendController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::pluck('name', 'id');
+        return view('modules.task.create', compact('users'));
     }
 
     /**
@@ -42,16 +39,26 @@ class FrontendController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd('TASK');
+        // $this->validate($request,[
+        //     'title'=> 'requi;red',
+        //     'description'=> 'required',
+        // ]);
+        // dd($request->all());
+
+
+        // Insert data
+        Task::create($request->all());
+        return redirect()->route('task.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Task $task)
     {
         //
     }
@@ -59,10 +66,10 @@ class FrontendController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Task $task)
     {
         //
     }
@@ -71,10 +78,10 @@ class FrontendController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Task $task)
     {
         //
     }
@@ -82,10 +89,10 @@ class FrontendController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Task $task)
     {
         //
     }
