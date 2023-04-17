@@ -13,9 +13,10 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index()// For showing data list
     {
-        $tasks = Task::all();
+
+        $tasks = Task::with('user')->get();
         // dd($tasks);
         return view('modules.task.index',compact('tasks'));
     }
@@ -25,7 +26,7 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create() // For create data using form.
     {
         $users = User::pluck('name', 'id');
         return view('modules.task.create', compact('users'));
@@ -37,7 +38,7 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request) // To insert data into Table.
     {
         // dd('TASK');
         // $this->validate($request,[
@@ -58,9 +59,23 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function show(Task $task)
+    public function show($id)
     {
-        //
+        // When you are use model binding then syntax of relationship
+        //$task->load('user');
+        // compact('task')
+
+        // Id binding
+        //=========== Single data fetching
+        // 1. find() this will return single data
+        //2. findOrFail()  this will return 404 page if data is not found
+
+        // Multiple data fetching
+        //1. get()->paginate()
+
+        $task =Task::with('user')->findOrFail($id);
+        // dd($tasks);
+        return view('modules.task.show',compact('task'));
     }
 
     /**
@@ -69,9 +84,12 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function edit(Task $task)
+    public function edit($id)
     {
-        //
+
+        $users = User::pluck('name', 'id');
+        $task = Task::findOrFail($id);
+        return view('modules.task.edit',compact('users', 'task'));
     }
 
     /**
@@ -81,9 +99,11 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update(Request $request, $id)
     {
-        //
+       $task = Task::findOrFail(1);
+       $task->update($request->all());
+       return redirect()->route('task.index');
     }
 
     /**
@@ -92,8 +112,10 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Task $task)
+    public function destroy($id)
     {
-        //
+        $task = Task::findOrFail($id);
+        $task->delete();
+        return redirect()->route('task.index');
     }
 }

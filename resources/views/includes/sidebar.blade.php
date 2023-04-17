@@ -19,6 +19,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                Task Create
                             </a>
+                            <a class="nav-link" href="{{ route('task.index')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                               Task List
+                            </a>
                         </div>
                     </div>
                 </nav>
