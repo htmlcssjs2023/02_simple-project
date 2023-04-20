@@ -1,6 +1,6 @@
 @extends('layouts.master');
-
 @section('page_title', 'Task List')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 @section('content')
 
@@ -12,8 +12,16 @@
     <div class="row">
 
         <div class="col-md-12">
+
+           @if(Session::has('msg'))
+            <p class="alert alert-info">
+                {{ Session('msg') }}
+            </p>
+           @endif
+
                 <div class="card">
                 <div class="card-body bg-info fs-5">Task List</div>
+
                 <table class="table table-striped table-hover">
                     <thead>
                     <tr>
@@ -62,3 +70,5 @@
         </div>
     </div>
 @endsection
+
+

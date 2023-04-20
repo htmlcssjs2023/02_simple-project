@@ -7,4 +7,4 @@
 {!! Form::label('deadline', 'Deadline',['class'=>'mt-3']) !!}
 {!! Form::date('deadline', \Carbon\Carbon::now(),['class'=>'form-control', 'placeholder'=> 'Deadline'])!!}
 {!! Form::label('user_id', 'Select User',['class'=>'mt-3']) !!}
-{!! Form::select('user_id',$users,['class'=>'form-select', 'placeholder'=> 'Select User'] ) !!}
+{!! Form::select('user_id',$users,['class'=>'form-select','placeholder'=> 'Select User'] ) !!}

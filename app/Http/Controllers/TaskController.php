@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class TaskController extends Controller
 {
@@ -13,11 +17,9 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()// For showing data list
+    public function index()
     {
-
-        $tasks = Task::with('user')->get();
-        // dd($tasks);
+        $tasks = Task::with('user')->latest()->get();
         return view('modules.task.index',compact('tasks'));
     }
 
@@ -26,7 +28,7 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() // For create data using form.
+    public function create()
     {
         $users = User::pluck('name', 'id');
         return view('modules.task.create', compact('users'));
@@ -35,21 +37,14 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request  $request
+     * @return Response
      */
-    public function store(Request $request) // To insert data into Table.
+    public function store(StoreTaskRequest $request):RedirectResponse
     {
-        // dd('TASK');
-        // $this->validate($request,[
-        //     'title'=> 'requi;red',
-        //     'description'=> 'required',
-        // ]);
-        // dd($request->all());
-
-
         // Insert data
         Task::create($request->all());
+        session()->flash('msg', 'Your record saved successfully');
         return redirect()->route('task.index');
     }
 
@@ -59,22 +54,9 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Task $task)
     {
-        // When you are use model binding then syntax of relationship
-        //$task->load('user');
-        // compact('task')
-
-        // Id binding
-        //=========== Single data fetching
-        // 1. find() this will return single data
-        //2. findOrFail()  this will return 404 page if data is not found
-
-        // Multiple data fetching
-        //1. get()->paginate()
-
-        $task =Task::with('user')->findOrFail($id);
-        // dd($tasks);
+        $task->load('user');
         return view('modules.task.show',compact('task'));
     }
 
@@ -84,11 +66,10 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Task $task):View
     {
-
         $users = User::pluck('name', 'id');
-        $task = Task::findOrFail($id);
+        // $task = Task::findOrFail($id);
         return view('modules.task.edit',compact('users', 'task'));
     }
 
@@ -99,10 +80,11 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTaskRequest $request, Task $task):RedirectResponse
     {
-       $task = Task::findOrFail(1);
+    //    $task = Task::findOrFail($id);
        $task->update($request->all());
+       session()->flash('msg','Updated Successfully');
        return redirect()->route('task.index');
     }
 
@@ -112,10 +94,10 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Task $task)
     {
-        $task = Task::findOrFail($id);
         $task->delete();
+        session()->flash('msg','Deleted Successfully');
         return redirect()->route('task.index');
     }
 }
