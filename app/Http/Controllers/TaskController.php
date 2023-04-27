@@ -19,7 +19,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::with('user')->latest()->get();
+        $tasks = Task::with('user')->latest()->paginate(10);
         return view('modules.task.index',compact('tasks'));
     }
 

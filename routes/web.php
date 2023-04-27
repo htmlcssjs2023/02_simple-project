@@ -2,30 +2,31 @@
 
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Models\Task;
+use App\Http\Middleware\AdminMiddleware;
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+Route::group(['middleware'=>'auth'], function(){
+    Route::get('/', [FrontendController::class,'index'])->name('front.home');
+    Route::get('/contact', [FrontendController::class, 'contact'])->name('front.contact');
+    Route::get('/about-us', [FrontendController::class, 'about'])->name('front.about');
 
-// Route::get('/',function(){
-//     return view('layouts.master');
-// });
-
-Route::get('/', [FrontendController::class, 'index'])->name('front.home');
-Route::get('/contact', [FrontendController::class, 'contact'])->name('front.contact');
-Route::get('/about-us', [FrontendController::class, 'about'])->name('front.about');
-Route::get('/form', function(){
-    return view('form');
+    Route::resource('task', TaskController::class)->middleware('admin');
+    Route::resource('task', TaskController::class)->except('create');
+    Route::resource('users', UserController::class)->only('index', 'show');
 });
 
-// Route::get('task/create', [TaskController::class, 'create'])->name('task.create');
+require __DIR__.'/auth.php';
 
-// Route::post('task', [TaskController::class, 'store'])->name('task.store');
-// Route::get('task', [TaskController::class, 'index'])->name('task.index');
-
-// Route::get('task/{task}', [TaskController::class, 'show'])->name('task.show');
-// Route::get('task/{task}/edit', [TaskController::class, 'edit'])->name('task.edit');
-// Route::put('task/{task}', [TaskController::class, 'update'])->name('task.update');
-// Route::delete('task/{task}', [TaskController::class, 'destroy'])->name('task.destroy');
-
-Route::resource('task', TaskController::class);
 

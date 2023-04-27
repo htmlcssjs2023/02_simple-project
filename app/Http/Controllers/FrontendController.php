@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class FrontendController extends Controller
 {
@@ -21,7 +22,9 @@ class FrontendController extends Controller
     }
     public function about(){
 
-        return view('about-us');
+        $categories =Category::with('posts')->get();
+        // dd($categories);
+        return view('about-us',['categories' => $categories]);
     }
 
     /**

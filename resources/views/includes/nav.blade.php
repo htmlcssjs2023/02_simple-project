@@ -18,7 +18,11 @@
                 <li><a class="dropdown-item" href="#!">Settings</a></li>
                 <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#!">Logout</a></li>
+                <li>
+                    {!! Form::open(['method' => 'POST', 'route' => 'logout']) !!}
+                    {!! Form::button('Logout', ['type'=> 'submit', 'class' => 'btn btn-danger ']) !!}
+                    {!! Form::close() !!}
+                </li>
             </ul>
         </li>
     </ul>

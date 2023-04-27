@@ -19,6 +19,11 @@
                    <strong>Phone NO : </strong> <span>02788387282</span> <br>
                    <strong>Web: </strong> <span>www.thezoomit.com</span> <br>
                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad accusamus a alias temporibus ullam ducimus dicta dolorum quas atque aspernatur. Rem eligendi nesciunt iure doloremque ex architecto quidem sequi nulla!</p>
+                   <ul>
+                    @foreach ($categories as $category)
+                        <li>{{ $category->name}} - {{ $category->posts->count() }}</li>
+                    @endforeach
+                   </ul>
                 </div>
               </div>
         </div>
